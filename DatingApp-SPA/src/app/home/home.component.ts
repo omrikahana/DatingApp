@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  @Input() isLoggedIn: boolean;
   registerMode = false;
   constructor(private http: HttpClient) { }
   ngOnInit() {
@@ -19,5 +20,4 @@ export class HomeComponent implements OnInit {
   cancelRegisterMode(registerMode: boolean){
     this.registerMode = registerMode;
   }
-
 }
