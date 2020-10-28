@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -23,6 +24,10 @@ import { appRoutes } from './routes';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { MemberEditResolver } from './_resolvers/member-edit.resolver';
+import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
+import { AuthGuard } from './_guards/auth.guard';
 
 export function tokenGetter(){
   return localStorage.getItem('token');
@@ -38,7 +43,8 @@ export function tokenGetter(){
     ListsComponent,
     MessagesComponent,
     MemberCardComponent,
-    MemberDetailComponent
+    MemberDetailComponent,
+    MemberEditComponent
   ],
   imports: [
     BrowserModule,
@@ -49,15 +55,22 @@ export function tokenGetter(){
     TabsModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     NgxGalleryModule,
+    PaginationModule.forRoot(),
     JwtModule.forRoot({
       config: {
-        tokenGetter: tokenGetter,
+        tokenGetter,
         whitelistedDomains: ['localhost:5000'],
         blacklistedRoutes: ['localhost:5000/api/auth']
       }
     })
   ],
-  providers: [ErrorInterceptorProvider, AuthService, MemberDetailResolver, MemberListResolver],
+  providers: [ErrorInterceptorProvider,
+     AuthService,
+     MemberDetailResolver,
+     MemberListResolver,
+     MemberEditResolver,
+     AuthGuard,
+     PreventUnsavedChanges],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
