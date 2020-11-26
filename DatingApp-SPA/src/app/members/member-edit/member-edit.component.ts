@@ -20,6 +20,7 @@ export class MemberEditComponent implements OnInit {
   @ViewChild('EditForm', { static: true }) editForm: NgForm;
   user: User;
   photoUrl: string;
+  live: true;
   @HostListener('window: beforeunload', ['$event'])
   unloadNotification($event: any){
     if (this.editForm.dirty){
